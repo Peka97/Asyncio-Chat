@@ -5,6 +5,71 @@ from socket import *
 from pprint import pprint
 
 
+def get_message_from_client(client: socket) -> str:
+    """Gets and converts the message to string form
+
+    Args:
+        client (socket): Client socket.
+
+    Returns:
+        Str: Message from client.
+    """
+
+    return client.recv(1000).decode('utf-8')
+
+
+def get_responce_to_client(message: bytes) -> dict:
+    """Generates a response based on the passed message.
+
+    Args:
+        message (str): Message from client.
+
+    Returns:
+        dict: Response.
+    """
+
+    try:
+        json.dumps(message)
+        response = {
+            "response": 200,
+            "time": time(),
+        }
+    except json.decoder.JSONDecodeError:
+        response = {
+            "response": 400,
+            "time": time(),
+            "alert": "Bad Request"
+        }
+    except Exception as err:
+        print(err)
+        response = {
+            "response": 500,
+            "time": time(),
+            "alert": "Server Error"
+        }
+
+    return response
+
+
+def send_to_client(
+    client: socket,
+    address: int,
+    port: int,
+    message: dict
+) -> None:
+    """Sends a message to the client.
+
+    Args:
+        client (socket): Socket of client.
+        address (int): IP of client.
+        port (int): Port of client.
+        message (dict): Message from server.
+    """
+
+    client.sendto(json.dumps(message).encode('utf-8'),
+                  (address, port))
+
+
 def start(args: argparse.ArgumentParser) -> None:
     """Server for messaging with clients.
 
@@ -14,39 +79,18 @@ def start(args: argparse.ArgumentParser) -> None:
 
     port, addr = args.p, args.a
     s = socket(AF_INET, SOCK_STREAM)
+    s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
     s.bind((addr, port))
     s.listen(5)
 
     while True:
         client, addr_info = s.accept()
-        client_addr, client_ip = addr_info
+        client_addr, client_port = addr_info
 
-        try:
-            msg = client.recv(1000)
-            json_msg = json.loads(msg.decode('utf-8'))
-            print(f"Client Message:")
-            pprint(json_msg)
-            response = {
-                "response": 200,
-                "time": time(),
-            }
-        except json.decoder.JSONDecodeError:
-            response = {
-                "response": 400,
-                "time": time(),
-                "alert": "Bad Request"
-            }
-        except Exception:
-            response = {
-                "response": 500,
-                "time": time(),
-                "alert": "Server Error"
-            }
-
-        print("\nServer Responce:")
-        pprint(response)
-        client.sendto(json.dumps(response).encode('utf-8'),
-                      (client_addr, client_ip))
+        message = get_message_from_client(client)  # Принимаем сообщение
+        response = get_responce_to_client(message)  # Формируем ответ клиенту
+        send_to_client(client, client_addr, client_port,
+                       response)  # Отправляем ответ клиенту
 
 
 if __name__ == '__main__':
