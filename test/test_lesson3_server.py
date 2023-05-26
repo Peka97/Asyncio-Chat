@@ -22,11 +22,9 @@ class TestServerFunction(unittest.TestCase):
         return super().tearDown()
 
     def test_get_message_from_client(self):
-        # Подготовка
         client, _ = self.server.accept()
         self.client.sendto(b'Test string', (self.addr, self.port))
 
-        # Проверка
         result = get_message_from_client(client)
         self.assertAlmostEqual(result, 'Test string')
 

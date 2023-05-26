@@ -23,27 +23,11 @@ class TestClientFunction(unittest.TestCase):
         return super().tearDown()
 
     def test_get_responce_from_server(self):
-        # Выходит ошибка OSError: [Errno 9] Bad file descriptor.
-        # Понимаю, что ругается вероятнее всего на то, что сокет не открыт,
-        # пробовал по всякому, но не вышло. Сложно тестировать такой код. но
-        # ТЗ прошлого задания требовало функцию для получения фактически из
-        # сокета.
+        client, _ = self.client.accept()
+        self.server.sendto(b'Test string', (self.addr, self.port))
 
-        # message = json.dumps({
-        #     "response": 200,
-        #     "time": time(),
-        # }).encode('utf-8')
-        # self.client.sendto(message, (self.addr, self.port))
-
-        # r = get_responce_from_server(self.client)
-        # self.assertAlmostEqual(
-        #     r,
-        #     json.dumps({
-        #         "response": 200,
-        #         "time": time(),
-        #     }).encode('utf-8')
-        # )
-        pass
+        result = get_responce_from_server(client)
+        self.assertAlmostEqual(result, 'Test string')
 
     def test_convert_response(self):
         message = json.dumps({
@@ -51,6 +35,8 @@ class TestClientFunction(unittest.TestCase):
             "time": time(),
         }).encode('utf-8')
         r = convert_response(message)
+
+        # Ввиду того, что возвращается словарь, проверяю ключевые поля
         self.assertAlmostEqual(
             r['response'],
             200
