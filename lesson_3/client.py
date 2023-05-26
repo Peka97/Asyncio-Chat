@@ -77,19 +77,19 @@ def start(args: argparse.ArgumentParser) -> None:
 
     addr, port = args.address, args.port
 
-    s = socket(AF_INET, SOCK_STREAM)
-    s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+    client = socket(AF_INET, SOCK_STREAM)
+    client.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
-    s.connect((addr, port))
+    client.connect((addr, port))
 
     request = get_presence_msg()  # Формируем presence-сообщение
-    send_message_to_server(s, request, addr, port)  # Отправляем серверу
-    message = get_responce_from_server(s)  # Получаем ответ от сервера
+    send_message_to_server(client, request, addr, port)  # Отправляем серверу
+    message = get_responce_from_server(client)  # Получаем ответ от сервера
     response = convert_response(message)  # Преобразуем ответ в dict
 
     print('Server Response:')  # Читаем ответ
     pprint(response)
-    s.close()
+    client.close()
 
 
 if __name__ == '__main__':
