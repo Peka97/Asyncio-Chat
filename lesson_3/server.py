@@ -2,7 +2,6 @@ import json
 import argparse
 from time import time
 from socket import *
-from pprint import pprint
 
 
 def get_message_from_client(client: socket) -> str:
@@ -18,7 +17,7 @@ def get_message_from_client(client: socket) -> str:
     return client.recv(1000).decode('utf-8')
 
 
-def get_responce_to_client(message: bytes) -> dict:
+def get_responce_to_client(message: str) -> dict:
     """Generates a response based on the passed message.
 
     Args:
@@ -29,7 +28,7 @@ def get_responce_to_client(message: bytes) -> dict:
     """
 
     try:
-        json.dumps(message)
+        json.loads(message)
         response = {
             "response": 200,
             "time": time(),
@@ -40,8 +39,7 @@ def get_responce_to_client(message: bytes) -> dict:
             "time": time(),
             "alert": "Bad Request"
         }
-    except Exception as err:
-        print(err)
+    except Exception:
         response = {
             "response": 500,
             "time": time(),
