@@ -1,9 +1,15 @@
 import argparse
 import json
+import logging
 from time import time
 from socket import *
 from pprint import pprint
 from typing import Union
+
+import log.config.client_log_config
+
+
+LOGGER = logging.getLogger('client')
 
 
 def get_presence_msg() -> dict:
@@ -74,21 +80,31 @@ def start(args: argparse.ArgumentParser) -> None:
     Args:
         args (argparse.ArgumentParser): Server IP and Server Port
     """
-
     addr, port = args.address, args.port
 
     client = socket(AF_INET, SOCK_STREAM)
     client.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
-    client.connect((addr, port))
+    try:
+        client.connect((addr, port))
+        LOGGER.info(
+            f"Установлено соединение с {addr if addr != '' else 'localhost'}:{port}")
 
-    request = get_presence_msg()  # Формируем presence-сообщение
-    send_message_to_server(client, request, addr, port)  # Отправляем серверу
-    message = get_responce_from_server(client)  # Получаем ответ от сервера
-    response = convert_response(message)  # Преобразуем ответ в dict
+        request = get_presence_msg()  # Формируем presence-сообщение
+        send_message_to_server(client, request, addr,
+                               port)  # Отправляем серверу
+        LOGGER.info(
+            f"Отправили сообщение {addr if addr != '' else 'localhost'}:{port}")
 
-    print('Server Response:')  # Читаем ответ
-    pprint(response)
+        message = get_responce_from_server(client)  # Получаем ответ от сервера
+
+        response = convert_response(message)  # Преобразуем ответ в dict
+        LOGGER.info(
+            f"Получили ответ от {addr if addr != '' else 'localhost'}:{port} - {response}")
+    except Exception:
+        LOGGER.critical(
+            f"Ошибка при отправке на сервер {addr if addr != '' else 'localhost'}:{port}")
+
     client.close()
 
 
