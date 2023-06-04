@@ -1,0 +1,2 @@
+2023-05-30 21:03:38 - [ERROR] - client_log_config.py | CLIENT | Error test message
+2023-05-30 21:03:38 - [CRITICAL] - client_log_config.py | CLIENT | Critical test message

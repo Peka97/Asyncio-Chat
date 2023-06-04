@@ -7,6 +7,7 @@ from pprint import pprint
 from typing import Union
 
 import log.config.client_log_config
+from log.decorator import Log
 
 
 LOGGER = logging.getLogger('client')
@@ -31,6 +32,7 @@ def get_presence_msg() -> dict:
     return result
 
 
+@Log(LOGGER)
 def send_message_to_server(
         socket: socket,
         message: dict,

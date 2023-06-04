@@ -6,11 +6,13 @@ from socket import *
 from typing import Union
 
 import log.config.server_log_config
+from log.decorator import Log
 
 
 LOGGER = logging.getLogger('server')
 
 
+@Log(LOGGER)
 def get_message_from_client(client: socket) -> str:
     """Gets and converts the message to string form
 
