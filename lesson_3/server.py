@@ -4,6 +4,7 @@ import logging
 from time import time
 from socket import *
 from typing import Union
+from select import select
 
 import log.config.server_log_config
 from log.decorator import Log
@@ -94,24 +95,65 @@ def start(args: argparse.ArgumentParser) -> None:
     Args:
         args (argparse.ArgumentParser): Port to work and IP to listening.
     """
+    clients = []
 
     port, addr = args.p, args.a
     s = socket(AF_INET, SOCK_STREAM)
-    s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
     s.bind((addr, port))
     s.listen(5)
+    s.settimeout(1)
 
     while True:
-        client, addr_info = s.accept()
-        client_addr, client_port = addr_info
-        LOGGER.info(f'Подключение клиента: {client_addr}:{client_port}')
+        try:
+            client, addr_info = s.accept()
+            client_addr, client_port = addr_info
 
-        message = get_message_from_client(client)  # Принимаем сообщение
-        response = get_responce_to_client(
-            message, client_addr, client_port
-        )  # Формируем ответ клиенту
-        send_to_client(client, client_addr, client_port,
-                       response)  # Отправляем ответ клиенту
+        except OSError as err:
+            pass
+        else:
+            LOGGER.info(f'Подключение клиента: {client_addr}:{client_port}')
+            clients.append(client)
+        finally:
+            try:
+                to_read = []
+                to_write = []
+                to_except = []
+                to_read, to_write, to_except = select(
+                    clients, clients, clients, 0)
+            except Exception:
+                pass
+
+            # Проверка количества клиентов
+            LOGGER.info(f'Read: {len(to_read)}')
+            LOGGER.info(f'Write: {len(to_write)}')
+
+            responses = []
+
+            if to_read:  # Проверяем есть ли клиенты с данными
+                for client in to_read:
+                    try:
+                        # Получаем сообщения клиентов
+                        message = get_message_from_client(client)
+                        LOGGER.info(
+                            f'Сообщение от {client_addr}:{client_port} - {message}')
+                        response = get_responce_to_client(
+                            message, client_addr, client_port
+                        )
+                        responses.append(response)
+                    except Exception:
+                        clients.remove(client)
+
+            # Проверяем есть ли сообщения и получатели
+            if responses and to_write:
+                LOGGER.info('Приступаю к отправке сообщений')
+                for response in responses:
+                    for client in to_write:
+                        try:
+                            # Отправляем сообщения получателям
+                            send_to_client(client, client_addr,
+                                           client_port, response)
+                        except Exception:
+                            clients.remove(client)
 
 
 if __name__ == '__main__':

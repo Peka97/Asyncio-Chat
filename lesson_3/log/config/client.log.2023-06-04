@@ -1,0 +1,45 @@
+2023-06-04 00:00:33 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:00:33 - [CRITICAL] - client.py | Ошибка при отправке на сервер localhost:7777
+2023-06-04 00:01:14 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:01:14 - [CRITICAL] - client.py | Ошибка при отправке на сервер localhost:7777
+2023-06-04 00:01:22 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:01:41 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:01:41 - [CRITICAL] - client.py | Ошибка при отправке на сервер localhost:7777
+2023-06-04 00:07:40 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:07:40 - [DEBUG] - log.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:07:40 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:07:40 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837260.437394}
+2023-06-04 00:09:45 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:09:45 - [DEBUG] - decorator.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:09:45 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:09:45 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837385.0426364}
+2023-06-04 00:10:12 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:10:12 - [DEBUG] - decorator.py | Функция get_presence_msg вызвана из модуля __main__
+2023-06-04 00:10:12 - [DEBUG] - decorator.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:10:12 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:10:12 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837412.7894824}
+2023-06-04 00:10:38 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:10:38 - [DEBUG] - decorator.py | Функция get_presence_msg вызвана из модуля __main__
+2023-06-04 00:10:38 - [DEBUG] - decorator.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:10:38 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:10:38 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837438.8550467}
+2023-06-04 00:11:57 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:11:57 - [DEBUG] - decorator.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:11:57 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:11:57 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837517.6475453}
+2023-06-04 00:12:05 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:12:05 - [DEBUG] - decorator.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:12:05 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:12:05 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837525.4581082}
+2023-06-04 00:12:06 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:12:06 - [DEBUG] - decorator.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:12:06 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:12:06 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837526.6160467}
+2023-06-04 00:12:43 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:12:43 - [DEBUG] - decorator.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:12:43 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:12:43 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837563.5319414}
+2023-06-04 00:12:44 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-04 00:12:44 - [DEBUG] - decorator.py | Функция send_message_to_server вызвана из модуля __main__
+2023-06-04 00:12:44 - [INFO] - client.py | Отправили сообщение localhost:7777
+2023-06-04 00:12:44 - [INFO] - client.py | Получили ответ от localhost:7777 - {'response': 200, 'time': 1685837564.8311265}
