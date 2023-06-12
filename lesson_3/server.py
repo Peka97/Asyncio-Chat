@@ -24,7 +24,7 @@ def get_message_from_client(client: socket) -> str:
         Str: Message from client.
     """
 
-    return client.recv(1000).decode('utf-8')
+    return client.recv(1024).decode('utf-8')
 
 
 def get_responce_to_client(
@@ -84,8 +84,7 @@ def send_to_client(
         message (dict): Message from server.
     """
 
-    client.sendto(json.dumps(message).encode('utf-8'),
-                  (address, port))
+    client.send(json.dumps(message).encode('utf-8'))
     LOGGER.info(f'Отправка сообщения клиенту {address}:{port}')
 
 
@@ -117,15 +116,14 @@ def start(args: argparse.ArgumentParser) -> None:
             try:
                 to_read = []
                 to_write = []
-                to_except = []
                 to_read, to_write, to_except = select(
-                    clients, clients, clients, 0)
+                    clients, clients, [], 0)
             except Exception:
                 pass
 
             # Проверка количества клиентов
-            LOGGER.info(f'Read: {len(to_read)}')
-            LOGGER.info(f'Write: {len(to_write)}')
+            # LOGGER.info(f'Read: {len(to_read)}')
+            # LOGGER.info(f'Write: {len(to_write)}')
 
             responses = []
 
@@ -139,9 +137,10 @@ def start(args: argparse.ArgumentParser) -> None:
                         response = get_responce_to_client(
                             message, client_addr, client_port
                         )
-                        responses.append(response)
+                        if response:
+                            responses.append(response)
                     except Exception:
-                        clients.remove(client)
+                        pass
 
             # Проверяем есть ли сообщения и получатели
             if responses and to_write:

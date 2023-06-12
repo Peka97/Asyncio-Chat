@@ -50,13 +50,8 @@ def send_message_to_server(
 
 def send_to_server(client, addr, port):
     try:
-        client.connect((addr, port))
-        LOGGER.info(
-            f"Установлено соединение с {addr if addr != '' else 'localhost'}:{port}")
-
         request = get_presence_msg()  # Формируем presence-сообщение
-        send_message_to_server(client, request, addr,
-                               port)  # Отправляем серверу
+        send_message_to_server(client, request)  # Отправляем серверу
         LOGGER.info(
             f"Отправили сообщение {addr if addr != '' else 'localhost'}:{port}")
     except Exception as err:

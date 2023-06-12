@@ -20,7 +20,9 @@ def start(args: argparse.ArgumentParser) -> None:
     addr, port, mode = args.address, args.port, args.mode
 
     client = socket(AF_INET, SOCK_STREAM)
-    # client.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+    client.connect((addr, port))
+    LOGGER.info(
+        f"Установлено соединение с {addr if addr != '' else 'localhost'}:{port}")
 
     if mode == 'R':
         LOGGER.info('Read Mode')

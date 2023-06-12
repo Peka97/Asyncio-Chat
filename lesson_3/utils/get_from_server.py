@@ -18,32 +18,14 @@ def get_responce_from_server(socket: socket) -> bytes:
         bytes: Message from the server
     """
 
-    return socket.recv(1000)
-
-
-def convert_response(message: bytes) -> dict:
-    """Convert message from bytes to dict.
-
-    Args:
-        message (bytes): Message from the server
-
-    Returns:
-        dict: Dict with response data 
-    """
-
-    return json.loads(message.decode('utf-8'))
+    return json.loads(socket.recv(1000).decode('utf-8'))
 
 
 def get_from_server(client, addr, port):
     try:
-        client.connect((addr, port))
-        LOGGER.info(
-            f"Установлено соединение с {addr if addr != '' else 'localhost'}:{port}")
         message = get_responce_from_server(client)  # Получаем ответ от сервера
-
-        response = convert_response(message)  # Преобразуем ответ в dict
         LOGGER.info(
-            f"Получили ответ от {addr if addr != '' else 'localhost'}:{port} - {response}")
+            f"Получили ответ от {addr if addr != '' else 'localhost'}:{port} - {message}")
     except Exception:
         LOGGER.critical(
             f"Ошибка при получении данных с сервера {addr if addr != '' else 'localhost'}:{port}")
