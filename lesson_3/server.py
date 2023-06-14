@@ -94,6 +94,7 @@ def start(args: argparse.ArgumentParser) -> None:
     Args:
         args (argparse.ArgumentParser): Port to work and IP to listening.
     """
+
     clients = []
 
     port, addr = args.p, args.a
