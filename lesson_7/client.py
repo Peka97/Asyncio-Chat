@@ -1,31 +1,32 @@
-import argparse
-import logging
+from time import sleep
+from threading import Thread
 from socket import *
-
-from utils import read_message, send_message
 
 
 def write_loop(client: socket):
     while True:
-        message = input('Message: ').encode('utf-8')
+        message = input('Enter your Message: ').encode('utf-8')
         client.send(message)
 
 
 def read_loop(client: socket):
     while True:
         message = client.recv(1024).decode('utf-8')
-        print(message)
+        print(f'\n{message}')
 
 
 def main():
     client = socket(AF_INET, SOCK_STREAM)
     client.connect(('', 7777))
 
-    mode = input('Select mode (R)ead or (W)rite: ')
-    if mode == 'R':
-        read_loop(client)
-    elif mode == 'W':
-        write_loop(client)
+    read_thread = Thread(target=read_loop, args=(client, ), daemon=True)
+    write_thread = Thread(target=write_loop, args=(client, ), daemon=True)
+
+    read_thread.start()
+    write_thread.start()
+
+    while read_thread.is_alive() and write_thread.is_alive():
+        sleep(1)
 
     client.close()
 
