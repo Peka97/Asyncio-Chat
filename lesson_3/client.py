@@ -17,6 +17,7 @@ def start(args: argparse.ArgumentParser) -> None:
     Args:
         args (argparse.ArgumentParser): Server IP and Server Port
     """
+
     addr, port, mode = args.address, args.port, args.mode
 
     client = socket(AF_INET, SOCK_STREAM)

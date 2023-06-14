@@ -1,18 +1,18 @@
-2023-06-12 00:00:07 - [INFO] - client.py | Установлено соединение с localhost:7777
-2023-06-12 00:00:07 - [INFO] - client.py | Write Mode
-2023-06-12 00:00:07 - [CRITICAL] - send_to_server.py | Ошибка при отправке на сервер localhost:7777
-2023-06-12 00:00:07 - [CRITICAL] - send_to_server.py | send_message_to_server() missing 2 required positional arguments: 'address' and 'port'
-2023-06-12 00:00:18 - [INFO] - client.py | Установлено соединение с localhost:7777
-2023-06-12 00:00:18 - [INFO] - client.py | Read Mode
-2023-06-12 00:00:21 - [INFO] - client.py | Установлено соединение с localhost:7777
-2023-06-12 00:00:21 - [INFO] - client.py | Write Mode
-2023-06-12 00:00:21 - [CRITICAL] - send_to_server.py | Ошибка при отправке на сервер localhost:7777
-2023-06-12 00:00:21 - [CRITICAL] - send_to_server.py | send_message_to_server() missing 2 required positional arguments: 'address' and 'port'
-2023-06-12 00:00:21 - [INFO] - get_from_server.py | Получили ответ от localhost:7777 - {'response': 400, 'time': 1686528021.222215, 'alert': 'Bad Request'}
-2023-06-12 00:01:06 - [INFO] - client.py | Установлено соединение с localhost:7777
-2023-06-12 00:01:06 - [INFO] - client.py | Read Mode
-2023-06-12 00:01:08 - [INFO] - client.py | Установлено соединение с localhost:7777
-2023-06-12 00:01:08 - [INFO] - client.py | Write Mode
-2023-06-12 00:01:08 - [CRITICAL] - send_to_server.py | Ошибка при отправке на сервер localhost:7777
-2023-06-12 00:01:08 - [CRITICAL] - send_to_server.py | send_message_to_server() missing 2 required positional arguments: 'address' and 'port'
-2023-06-12 00:01:09 - [INFO] - get_from_server.py | Получили ответ от localhost:7777 - {'response': 400, 'time': 1686528069.6893287, 'alert': 'Bad Request'}
+2023-06-14 16:22:29 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-14 16:22:29 - [INFO] - client.py | Read Mode
+2023-06-14 16:22:29 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-14 16:22:29 - [INFO] - client.py | Write Mode
+2023-06-14 16:22:29 - [CRITICAL] - send_to_server.py | Ошибка при отправке на сервер localhost:7777
+2023-06-14 16:22:29 - [CRITICAL] - send_to_server.py | send_message_to_server() missing 2 required positional arguments: 'address' and 'port'
+2023-06-14 16:22:30 - [INFO] - get_from_server.py | Получили ответ от localhost:7777 - {'response': 400, 'time': 1686759750.0941665, 'alert': 'Bad Request'}
+2023-06-14 16:22:46 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-14 16:22:46 - [INFO] - client.py | Read Mode
+2023-06-14 16:22:47 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-14 16:22:47 - [INFO] - client.py | Write Mode
+2023-06-14 16:22:47 - [CRITICAL] - send_to_server.py | Ошибка при отправке на сервер localhost:7777
+2023-06-14 16:22:47 - [CRITICAL] - send_to_server.py | send_message_to_server() missing 2 required positional arguments: 'address' and 'port'
+2023-06-14 16:22:48 - [INFO] - get_from_server.py | Получили ответ от localhost:7777 - {'response': 400, 'time': 1686759768.0271358, 'alert': 'Bad Request'}
+2023-06-14 16:25:51 - [INFO] - client.py | Установлено соединение с localhost:7777
+2023-06-14 16:25:51 - [INFO] - client.py | Write Mode
+2023-06-14 16:25:51 - [CRITICAL] - send_to_server.py | Ошибка при отправке на сервер localhost:7777
+2023-06-14 16:25:51 - [CRITICAL] - send_to_server.py | send_message_to_server() missing 2 required positional arguments: 'address' and 'port'
