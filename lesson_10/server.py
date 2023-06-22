@@ -8,11 +8,9 @@ from descriptors.port import Port
 class Server(metaclass=ServerVerifier):
     port = Port()
 
-    def __init__(self, addr: str = '', port: int = None) -> None:
+    def __init__(self, addr: str = '', port: int = 7777) -> None:
         self.addr = addr
-
-        if port is not None:
-            self.port = port
+        self.port = port
 
         # Для проверки ServerVerifier:
         # self.socket = socket(AF_INET, SOCK_DGRAM)
@@ -76,10 +74,8 @@ class Server(metaclass=ServerVerifier):
 
 if __name__ == '__main__':
     server = Server()
-    # Для проверки дескриптора Port:
-    # server.port = -10
 
-    # try:
-    #     server.start()
-    # except KeyboardInterrupt:
-    #     server.stop()
+    try:
+        server.start()
+    except KeyboardInterrupt:
+        server.stop()
