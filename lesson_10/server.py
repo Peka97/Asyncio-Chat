@@ -3,10 +3,12 @@ from select import select
 
 from metaclasses.server import ServerVerifier
 from descriptors.port import Port
+from database.db import Database
 
 
 class Server(metaclass=ServerVerifier):
     port = Port()
+    db = Database()
 
     def __init__(self, addr: str = '', port: int = 7777) -> None:
         self.addr = addr
@@ -38,6 +40,9 @@ class Server(metaclass=ServerVerifier):
             try:
                 client, addr_info = self.socket.accept()
                 client_addr, client_port = addr_info
+
+                # Делаем запись в БД о подключении
+                self.db.history_update(client_addr, client_port)
             except OSError as err:
                 pass
             else:
