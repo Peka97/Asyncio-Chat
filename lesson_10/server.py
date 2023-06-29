@@ -1,16 +1,20 @@
+import json
 from socket import *
 from select import select
 
 from metaclasses.server import ServerVerifier
 from descriptors.port import Port
-from database.db import Database
+from database.db import ServerDatabase
 
 
 class Server(metaclass=ServerVerifier):
     port = Port()
-    db = Database()
 
     def __init__(self, addr: str = '', port: int = 7777) -> None:
+        with open('server_config.json', 'r', encoding='utf-8') as fp:
+            config = json.load(fp)
+            self.db = ServerDatabase(config['db_path'])
+
         self.addr = addr
         self.port = port
 

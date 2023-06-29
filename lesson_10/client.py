@@ -3,6 +3,7 @@ from threading import Thread
 from socket import *
 
 from metaclasses.client import ClientVerifier
+from designs.connect import Ui_Connect
 
 
 class Client(metaclass=ClientVerifier):
@@ -33,6 +34,8 @@ class Client(metaclass=ClientVerifier):
     def start(self):
         # Для проверки ClientVetifier:
         # self.socket.accept()
+
+        ui = 
 
         self.socket.connect((self.addr, self.port))
         read_thread = Thread(target=self._read_loop,

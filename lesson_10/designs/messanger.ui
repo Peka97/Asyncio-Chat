@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Мессенджер</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QPlainTextEdit" name="plainTextEdit_messages_field">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string>User_1 00:00 Hi!
+User_2 00:01 Hello!
+</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" colspan="2">
+     <widget class="QListWidget" name="listWidget_contacts">
+      <item>
+       <property name="text">
+        <string>user_1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>user_2</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="1" column="0" rowspan="2">
+     <widget class="QLineEdit" name="lineEdit_user_text">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <layout class="QGridLayout" name="gridLayout_btns">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btn_send_message">
+        <property name="text">
+         <string>Отправить</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="btn_add_contact">
+        <property name="text">
+         <string>Добавить контакт</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="btn_exit">
+        <property name="text">
+         <string>Выход</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
