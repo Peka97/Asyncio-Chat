@@ -1,16 +1,19 @@
 import json
+from time import time
 from socket import *
 from select import select
+from traceback import format_exc
 
 from metaclasses.server import ServerVerifier
 from descriptors.port import Port
 from database.db import ServerDatabase
+from messages import Message
 
 
 class Server(metaclass=ServerVerifier):
     port = Port()
 
-    def __init__(self, addr: str = '', port: int = 7777) -> None:
+    def __init__(self, addr: str = '127.0.0.1', port: int = 7777) -> None:
         with open('server_config.json', 'r', encoding='utf-8') as fp:
             config = json.load(fp)
             self.db = ServerDatabase(config['db_path'])
@@ -23,18 +26,53 @@ class Server(metaclass=ServerVerifier):
 
         self.socket = socket(AF_INET, SOCK_STREAM)
         self.socket.bind((self.addr, self.port))
-        self.socket.listen(5)
         self.socket.settimeout(1)
+        self.socket.listen(5)
 
         self.clients = []
 
-    @staticmethod
-    def read_message(socket: socket):
-        return socket.recv(1024).decode('utf-8')
+    def read_message(self, socket: socket):
+        message = json.loads(socket.recv(1024).decode('utf-8'))
+        if message['action'] == 'auth':
+            try:
+                username = message['username']
+                password = message['password']
+
+                if self.db.user_exists(username):
+                    answer = {
+                    'response': 200,
+                    'time': time()
+                    }
+                else:
+                    answer = {
+                        'responce': 403,
+                        'time': time()
+                        }
+            except Exception as err:
+                answer = {
+                        'responce': 403,
+                        'time': time()
+                        }
+        elif message['action'] == 'get_contacts':
+            username = message['username']
+            print('Username: ' + username)
+            contacts = self.db.user_get_contacts(username)
+            print(f'Contacts: {contacts}')
+            answer = Message.send_contacts(contacts)
+        elif message['action'] == 'add_contact':
+            answer = Message.add_contact()
+        elif message['action'] == 'del_contact':
+            answer = Message.del_contact()
+        else:
+            return
+        
+        if not isinstance(answer, bytes):
+            answer = json.dumps(answer).encode('utf-8')
+        self.send_message(socket, answer)
 
     @staticmethod
-    def send_message(socket: socket, message: str):
-        socket.send(message.encode('utf-8'))
+    def send_message(socket: socket, message: dict):
+        socket.send(message)
 
     def start(self):
         # Для проверки ServerVerifier:
@@ -46,28 +84,31 @@ class Server(metaclass=ServerVerifier):
                 client_addr, client_port = addr_info
 
                 # Делаем запись в БД о подключении
-                self.db.history_update(client_addr, client_port)
+                # self.db.history_update(client_addr, client_port)
             except OSError as err:
                 pass
             else:
                 self.clients.append(client)
             finally:
                 try:
-                    i_cli, o_cli, e_cli = select(
-                        self.clients,
-                        self.clients,
-                        [],
-                        0
-                    )
-                except Exception:
-                    pass
+                    if self.clients:
+                        i_cli, o_cli, e_cli = select(self.clients, self.clients, [], 0)
+                    else:
+                        continue
+                except Exception as err:
+                    print(f"ОШИБКА: {format_exc()}")
 
                 messages = []  # Обнуляем список сообщений
 
                 for client in i_cli:
-                    message = self.read_message(client)
-                    if message:  # Исключаем пустые строки
-                        messages.append(message)
+                    try:
+                        message = self.read_message(client)
+                        if message:  # Исключаем пустые строки
+                            messages.append(message)
+                    except ConnectionResetError:
+                        self.clients.remove(client)
+                    except json.decoder.JSONDecodeError:
+                        self.clients.remove(client)
 
                 if messages:  # Проверяем есть ли сообщения
                     for message in messages:
