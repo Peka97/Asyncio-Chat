@@ -7,7 +7,7 @@ from designs.admin import Ui_Admin
 from client import Client
 
 
-class Window:
+class ClientWindow:
     def __init__(self):
         self.app = QtWidgets.QApplication(sys.argv)
         self.app.setStyle("Fusion")
@@ -26,12 +26,6 @@ class Window:
         self.ui.setupUi(self.window)
         self.window.show()
 
-    def show_admin_window(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_Admin()
-        self.ui.setupUi(self.window)
-        self.window.show()
-
     def connect_to_server(self):
         addr = self.ui.lineEdit_ip.text()
         port = self.ui.lineEdit_port.text()
@@ -47,6 +41,6 @@ class Window:
 
 
 if __name__ == '__main__':
-    window = Window()
+    window = ClientWindow()
     window.show_connect_window()
     sys.exit(window.app.exec_())
