@@ -33,26 +33,28 @@ class Server(metaclass=ServerVerifier):
 
     def read_message(self, socket: socket):
         message = json.loads(socket.recv(1024).decode('utf-8'))
+        answer = {
+                        'response': 403,
+                        'time': time()
+                        }
         if message['action'] == 'auth':
+            print('АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ')
             try:
                 username = message['username']
                 password = message['password']
+                print(f'LOGIN: {username}')
+                print(f'PSWD: {password}')
 
                 if self.db.user_exists(username):
-                    answer = {
-                    'response': 200,
-                    'time': time()
-                    }
-                else:
-                    answer = {
-                        'responce': 403,
+                    print('ПОЛЬЗОВАТЕЛЬ НАЙДЕН')
+                    if self.db.user_auth(username, password):
+                        print('ПОЛЬЗОВАТЕЛЬ АВТОРИЗОВАН')
+                        answer = {
+                        'response': 200,
                         'time': time()
-                        }
+                        }                    
             except Exception as err:
-                answer = {
-                        'responce': 403,
-                        'time': time()
-                        }
+                pass
         elif message['action'] == 'get_contacts':
             username = message['username']
             print('Username: ' + username)
@@ -68,6 +70,8 @@ class Server(metaclass=ServerVerifier):
         
         if not isinstance(answer, bytes):
             answer = json.dumps(answer).encode('utf-8')
+        print('ОТВЕТ')
+        print(answer)
         self.send_message(socket, answer)
 
     @staticmethod
