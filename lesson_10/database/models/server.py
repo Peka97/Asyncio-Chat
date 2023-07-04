@@ -1,10 +1,11 @@
 class User:
-    def __init__(self, first_name, last_name, username, password):
+    def __init__(self, first_name, last_name, username, password, salt):
         self.id = None
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
         self.password = password
+        self.salt = salt
         self.is_online = False
 
     def __repr__(self):

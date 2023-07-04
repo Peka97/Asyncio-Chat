@@ -1,13 +1,15 @@
 import sqlite3
 from datetime import datetime
+import os
+import hashlib
 
 from sqlalchemy import create_engine, select, table
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import registry
 from sqlalchemy import Table, Column, Integer, String, Boolean, DateTime, MetaData, ForeignKey
 
-from .models.server import User, ServerHistory, ServerContacts
-from .models.client import ClientContacts, MessageHistory
+from database.models.server import User, ServerHistory, ServerContacts
+from database.models.client import ClientContacts, MessageHistory
 
 
 class ServerDatabase:
@@ -25,6 +27,7 @@ class ServerDatabase:
             Column('last_name', String),
             Column('username', String),
             Column('password', String),
+            Column('salt', String),
             Column('online', Boolean, default=False),
         )
         history_table = Table(
@@ -58,17 +61,51 @@ class ServerDatabase:
                 return False
             return True
 
+    def user_auth(self, username, password):
+        with Session(self.engine) as session:
+            query = select(User).filter_by(username=username)
+            user = session.scalars(query).first()
+        if self.check_password(password, user):
+            print('ПАРОЛЬ ПРОВЕРЕН')
+            return True
+        print('ПАРОЛЬ НЕ ПОДХОДИТ')
+        return False
+
+    @staticmethod
+    def check_password(password, user):
+        pswd_hash = hashlib.pbkdf2_hmac(
+            'sha256',
+            password.encode('utf-8'),
+            user.salt,
+            100000,
+            128
+        )
+        print(pswd_hash)
+        print()
+        print(user.password)
+        return pswd_hash == user.password
+
     def user_create(self, first_name, last_name, username, password):
         with Session(self.engine) as session:
 
             if self.user_exists(username):
                 return
             try:
+                salt = os.urandom(32)
+                pswd_hash = hashlib.pbkdf2_hmac(
+                    'sha256',
+                    password.encode('utf-8'),
+                    salt,
+                    100000,
+                    128
+                )
+
                 user = User(
                     first_name,
                     last_name,
                     username,
-                    password
+                    pswd_hash,
+                    salt
                 )
                 session.add(user)
             except Exception as err:
