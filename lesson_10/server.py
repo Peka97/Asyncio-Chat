@@ -11,6 +11,8 @@ from messages import Message
 
 
 class Server(metaclass=ServerVerifier):
+    """Server"""
+
     port = Port()
 
     def __init__(self, addr: str = '127.0.0.1', port: int = 7777) -> None:
@@ -32,6 +34,7 @@ class Server(metaclass=ServerVerifier):
         self.clients = []
 
     def read_message(self, socket: socket):
+
         message = json.loads(socket.recv(1024).decode('utf-8'))
         answer = {
                         'response': 403,
