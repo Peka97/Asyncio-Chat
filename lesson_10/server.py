@@ -37,9 +37,9 @@ class Server(metaclass=ServerVerifier):
 
         message = json.loads(socket.recv(1024).decode('utf-8'))
         answer = {
-                        'response': 403,
-                        'time': time()
-                        }
+            'response': 403,
+            'time': time()
+        }
         if message['action'] == 'auth':
             print('АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ')
             try:
@@ -53,9 +53,9 @@ class Server(metaclass=ServerVerifier):
                     if self.db.user_auth(username, password):
                         print('ПОЛЬЗОВАТЕЛЬ АВТОРИЗОВАН')
                         answer = {
-                        'response': 200,
-                        'time': time()
-                        }                    
+                            'response': 200,
+                            'time': time()
+                        }
             except Exception as err:
                 pass
         elif message['action'] == 'get_contacts':
@@ -70,7 +70,7 @@ class Server(metaclass=ServerVerifier):
             answer = Message.del_contact()
         else:
             return
-        
+
         if not isinstance(answer, bytes):
             answer = json.dumps(answer).encode('utf-8')
         print('ОТВЕТ')
@@ -99,7 +99,8 @@ class Server(metaclass=ServerVerifier):
             finally:
                 try:
                     if self.clients:
-                        i_cli, o_cli, e_cli = select(self.clients, self.clients, [], 0)
+                        i_cli, o_cli, e_cli = select(
+                            self.clients, self.clients, [], 0)
                     else:
                         continue
                 except Exception as err:
