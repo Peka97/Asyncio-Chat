@@ -81,7 +81,7 @@ class Client(metaclass=ClientVerifier):
     @login_required
     def _read_loop(self):
         while True:
-            message = self.socket.recv(1024).decode('utf-8')
+            message = json.loads(socket.recv(1024).decode('utf-8'))
             print(f'\n{message}')
 
     def start(self):
@@ -97,18 +97,18 @@ class Client(metaclass=ClientVerifier):
 
         print('Готов к работе!')
 
-        # read_thread = Thread(target=self._read_loop,
-        #                      daemon=True)
-        # write_thread = Thread(target=self._write_loop,
-        #                       daemon=True)
+        read_thread = Thread(target=self._read_loop,
+                             daemon=True)
+        write_thread = Thread(target=self._write_loop,
+                              daemon=True)
 
-        # read_thread.start()
-        # write_thread.start()
+        read_thread.start()
+        write_thread.start()
 
-        # while self._working and (read_thread.is_alive() and write_thread.is_alive()):
-        #     sleep(1)
+        while self._working and (read_thread.is_alive() and write_thread.is_alive()):
+            sleep(1)
 
-        # self.socket.close()
+        self.socket.close()
 
     def stop(self):
         self._working = False
